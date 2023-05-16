@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4 p-4 d-flex justify-content-center">
+    <form action="" method="post" enctype="multipart/form-data" class="form-control" style="width: 300px;">
+        {% csrf_token %}
+        <h5 class="text-dark mb-4">Войти</h5>
+        <input class="form-control mb-2" type="text" placeholder="username" value="{{request.username}}"
+            name="username" />
+        <input class="form-control mb-2" type="password" placeholder="password" value="{{request.password}}"
+            name="password" />
+        <div class="d-flex justify-content-between align-content-center">
+            <input class="btn btn-warning mb-2" type="submit" value="Войти" />
+            <a href="" class="link">Регистрация</a>
+        </div>
+        <h6 class="text-dark">{{form.messages}}</h6>
+    </form>
+</div>
+
+{% endblock %}

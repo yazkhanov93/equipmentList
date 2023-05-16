@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <form action="" class="form-control mb-2" style="width: 500px;" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.equipmentId.label}}
+        {{form.equipmentId}}
+        {{form.specificationId.label}}
+        {{form.specificationId}}
+        {{form.fileName.label}}
+        {{form.fileName}}
+        {{form.fileImage}}
+        <input type="hidden" value="{{request.user.id}}" name="userUploadId">
+        <input type="hidden" value="{{request.user.id}}" name="userModifyId">
+        
+        <div class="d-flex justify-content-center m-4">
+            <input type="submit" value="Загрузит">
+        </div>
+        <p>{{form.errors}}</p>
+    </form>
+</div>
+{% endblock %}

@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
     firstname = models.CharField(max_length=50, verbose_name="Имя")
     middlename = models.CharField(max_length=50, verbose_name="Отчество")
     lastname = models.CharField(max_length=50, verbose_name="Фамилия")
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, verbose_name="Отдел")
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Отдел")
 
     class Meta:
         verbose_name_plural = "Пользователи"
@@ -41,6 +41,10 @@ class Equipment(models.Model):
 
 class Specification(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название")
+    slug = models.SlugField(unique=True, max_length=255)
+
+    def get_absolute_url(self):
+        return reverse('specification_list', args=[self.slug])
 
     class Meta:
         verbose_name_plural = "Спецификация"
@@ -53,12 +57,12 @@ class EquipmentList(models.Model):
     equipmentId = models.ForeignKey(Equipment, on_delete=models.CASCADE, verbose_name="Оборудования")
     specificationId = models.ForeignKey(Specification, on_delete=models.CASCADE, verbose_name="Спецификация")
     fileName = models.CharField(max_length=255, verbose_name="Названия файла")
-    fileImage = models.FileField(upload_to="equipment_files/", verbose_name="Файл")
+    fileImage = models.FileField(verbose_name="Файл")
     dateCreate = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     dateModify = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
     userModifyId = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Пользователь изменил")
     userDownloadId = models.ManyToManyField(CustomUser, blank=True, verbose_name="Пользователи скачали", related_name="user_download_id")
-    userUploadId = models.ManyToManyField(CustomUser, blank=True, verbose_name="Пользователь загрузил", related_name="user_upload_id")
+    userUploadId = models.ForeignKey(CustomUser, verbose_name="Пользователь загрузил", on_delete=models.CASCADE, related_name="user_upload_id")
 
     class Meta:
         verbose_name_plural = "Список Оборудование"
