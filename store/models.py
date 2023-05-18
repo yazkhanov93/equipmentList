@@ -57,6 +57,7 @@ class EquipmentList(models.Model):
     equipmentId = models.ForeignKey(Equipment, on_delete=models.CASCADE, verbose_name="Оборудования")
     specificationId = models.ForeignKey(Specification, on_delete=models.CASCADE, verbose_name="Спецификация")
     fileName = models.CharField(max_length=255, verbose_name="Названия файла")
+    comment = models.TextField(verbose_name="Описание", blank=True, null=True)
     fileImage = models.FileField(verbose_name="Файл")
     dateCreate = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     dateModify = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")

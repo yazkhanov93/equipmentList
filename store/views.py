@@ -5,12 +5,14 @@ from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .forms import *
 
 
 # function for download equipmentlist file or image
+@login_required(login_url="login")
 def download(request, pk): 
     f = EquipmentList.objects.get(id=pk)
     userId = request.user.id
@@ -26,6 +28,7 @@ def download(request, pk):
 
 
 # function for add equipmentList
+@login_required(login_url="login")
 def addEquipmentList(request):
     form = EquipmentListForm()
     if request.method == "POST":
@@ -37,6 +40,7 @@ def addEquipmentList(request):
 
 
 #function for edit equipmentList
+@login_required(login_url="login")
 def editEquipmentList(request, pk):
     eq_list = EquipmentList.objects.get(id=pk)
     if request.method == "POST":
@@ -48,6 +52,7 @@ def editEquipmentList(request, pk):
 
 
 #function for delete equipmentList
+@login_required(login_url="login")
 def deleteEquipmentList(request, pk):
     eq_list = EquipmentList.objects.get(id=pk)
     eq_list.delete()
@@ -55,6 +60,7 @@ def deleteEquipmentList(request, pk):
 
 
 #function for filter equipmentlist for specification
+@login_required(login_url="login")
 def specification(request, pk):
     eq_list = EquipmentList.objects.filter(specificationId=pk)
     search = request.GET.get("search", "")
@@ -64,6 +70,7 @@ def specification(request, pk):
 
 
 #home page
+@login_required(login_url="login")
 def index(request):
     sp = Specification.objects.all()
     eq_list = EquipmentList.objects.filter(specificationId=sp.first()) 
@@ -83,3 +90,9 @@ def logIn(request):
             login(request, user)
             return redirect("index")
     return render(request, "login.html", {})
+
+
+#logut
+def logOut(request):
+    logout(request)
+    return redirect("login")

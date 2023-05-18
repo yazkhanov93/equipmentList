@@ -8,6 +8,7 @@ urlpatterns = [
     path("delete-equipment-list/<int:pk>/", views.deleteEquipmentList, name="delete-equipment-list"),
     path('download/<int:pk>/', views.download, name="download"),
     path("specification/<int:pk>/",views.specification, name="specification"),
-    path("index", views.index, name="index"),
-    path("", views.logIn, name="login"),
+    path("", views.index, name="index"),
+    path("login", views.logIn, name="login"),
+    path("logout/", views.logOut, name="logout"),
 ]
