@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'windows_auth',
     "store",
 ]
 
@@ -50,9 +51,25 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
+    'windows_auth.middleware.UserSyncMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'windows_auth.backends.WindowsAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+WAUTH_DOMAINS = {
+    "EXAMPLE": {  # this is your domain's NetBIOS Name, same as in "EXAMPLE\\username" login scheme
+        "SERVER": "example.local",  # the FQDN of the DC server, usually is the FQDN of the domain itself
+        "SEARCH_BASE": "DC=example,DC=local",  # the default Search Base to use when searching
+        "USERNAME": "EXAMPLE\\bind_account",  # username of the account used to authenticate your Django project to Active Directory
+        "PASSWORD": "<super secret>",  # password for the binding account
+    }
+}
 
 ROOT_URLCONF = 'core.urls'
 
